@@ -1,0 +1,637 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+body{
+    font-family: 'Rubik', sans-serif;
+    background-image: url(assets/bg.jpg);
+    background-size: cover;
+    overflow: hidden;
+    color: #ffffff;
+}
+h1{
+    font-family: blowhole, sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
+    letter-spacing: 0.1vw;
+}
+input{
+    float: left;
+    font-family: 'Rubik';
+    height: 3vw;
+    color: white;
+    font-size: 1.4vw;
+    padding-left: 0.5vw;
+    padding-top: 0.2vw;
+    outline: none;
+}
+input::placeholder {
+    color: #493618;
+    font-size: 2vw;
+    font-family: blowhole;
+    font-style: italic;
+    text-transform: uppercase;
+    margin-top: 0.4vw;
+    opacity: 1;
+}
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+}
+
+
+/* POZOSTAŁE */
+#game{
+    display: none;
+}
+#lobby{
+    margin-top: 8vh;
+}
+#lobby_left{
+    float: left;
+    width: 44%;
+    height: 89vh;
+}
+#enter_name{
+    height: 7.5vw;
+    /*! background-color: #945a1b; */
+}
+#enter_name h1{
+    margin: 0;
+    margin-bottom: 0.4vw;
+    padding: 0.5vw 0;
+    font-size: 2.2vw;
+    color: #fcc746;
+}
+#select_name_input{
+    margin-left: 7vw;
+    width: 18vw;
+    border: solid 0.4vw #5d3309;
+    background: rgb(93,51,9);
+    background: linear-gradient(0deg, rgba(93,51,9,1) 3%, rgba(47,27,8,1) 100%); 
+}
+#select_name_input::placeholder {
+    color: #c59e3b;
+}
+#select_name_submit{
+    float: left;
+    width: 10vw;
+    height: 2.45vw; 
+    padding-top: 0.55vw;
+}
+#chat_lobby{
+    float: left;
+    width: 100%;
+    height: calc(100% - 8vw)
+}
+.chat{
+    width: 100%;
+    height: calc(100% - 3.3vw);
+    float: left;
+    overflow-x: auto;
+    border-bottom-style: solid;
+    border-bottom-width: 0.4vw;
+    border-image-source: url("assets/border.png");
+    border-image-slice: 11 11;
+}
+.lobby_msg{
+    padding-left: 0.3vw;
+    padding-top: 0.2vw;
+    padding-bottom: 0.2vw;
+    font-size: 1.1vw;
+    background-color:rgba(0, 0, 0, 0.5);
+    word-break: break-all;
+    border-radius: 0.1vw;
+}
+.lobby_msg span{
+    font-size: 1.2vw;
+}
+.msg{
+    font-size: 1.1vw;
+    background-color:rgba(0, 0, 0, 0.5);
+    word-break: break-all;
+    padding: 0.2vw 0 0.2vw 0.2vw;
+}
+.cloud_icon{
+    display: inline-block;
+    font-family: blowhole;
+    background-image: url(assets/cloud.png);
+    background-size: cover;
+    width: 1.2vw;
+    height: 1.3vw;
+    text-align: center;
+    color:#000000;
+    margin-top: -1.4vw;
+}
+.player_nick{
+    display: inline-block;
+    margin-left: 0.4vw;
+    font-size: 1.1vw;
+    color: gold;
+}
+.message{
+    display: inline-block;
+}
+.chat_input{
+    height: 3.1vw;
+    width: 100%;
+    float: left;
+}
+.chat_input form input{
+    background: none;
+    border: none;
+}
+#lobby_chat_input{
+    width: 43.6vw;
+}
+#chat_game_input{
+    width: 29.5vw;
+}
+.border_lobby{
+    border-style: solid;
+    border-width: 0.5vw;
+    border-image-source: url("assets/border.png");
+    border-image-slice: 11 11;
+    background-color:rgba(0, 0, 0, 0.4);
+}
+#lobby_rolelist{
+    float: left;
+    width: 27%;
+    height: 89vh;
+}
+#lobby_rolelist h1, #lobby_playerslist h1{
+    margin: 0;
+    padding: 1.5vh 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fcc746;
+    font-size: 1.68vw;
+}
+#lobby_rolelist ul{
+    height: 74%;
+}
+#lobby_rolelist ul li{
+    line-height: 2vh;
+    font-size: 1.6vw;
+    padding-left: 0.2vw;
+}
+#lobby_rolelist ul li:hover{
+    background: rgb(255,215,0);
+    background: linear-gradient(90deg, rgba(255,215,0,0.5284594521402311) 0%, rgba(255,215,0,0) 90%);
+}
+#players_ul li{
+    clear: both;
+    margin-top: 0.2vw;
+}
+.role_name{
+    display: inline-block;
+    margin-left: 0.2vw;
+    padding-top: 0.3vh;
+    text-shadow: 1px 1px 2px #000000;
+    margin-top: -3.2vh;
+}
+.role_icon{
+    display: inline-block;
+    width: 2.1vw;
+    height: 2.1vw;
+}
+#lobby_role_desc{
+    background: none !important;
+}
+#desc{
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    font-size: 1vw;
+    height: 10vh;
+    overflow-x: auto;
+}
+#lobby_playerslist{
+    float: left;
+    width: 25.9%;
+    height: 89vh;
+}
+#lobby_players_ul{
+    list-style-type: decimal;
+    height: calc(100% - calc(2.95vh + 9.4vw));
+    padding-left: 2vw;
+}
+#lobby_players_ul li{
+    margin-left: 1vw;
+    font-size: 1.4vw;
+}
+.lobby_buttons{
+    height: 2.7vw;
+    width: 100%;
+    background-image: url("assets/lobby_button.png");
+    background-size: 100% ;
+    font-size: 2vw;
+    font-family: blowhole;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
+    letter-spacing: 0.1vw;
+    color:#fcc746;
+    padding-top: 1vw;
+}
+.lobby_buttons:hover{
+    filter: brightness(130%);
+}
+#host_controls{
+    display: none;
+    position: absolute;
+    right: 0.9vw;
+    height: 89vh;
+    width: 25.9vw;
+    background-color: #1a0d02;
+    overflow-x: auto;
+}
+#host_controls ul{
+    display: none;
+}
+#host_controls ul li {
+    line-height: 2.5vh;
+    box-shadow: inset 0 0 1vw black;
+    padding-left: 0.2vw;
+    font-size: 1.6vw;
+}
+#host_controls ul li .role_name{
+    margin-top: -3.7vh;
+}
+#town_ul,#town_btn{
+    color: #7fff00;
+}
+#mafia_ul,#mafia_btn{
+    color: #dd0000;
+}
+#coven_ul,#coven_btn{
+    color: #bf5fff
+}
+#neutral_ul,#neutral_btn{
+    color: #cccccc;
+}
+#random_ul,#random_btn{
+    color: #1d7cf2;
+}
+#game_left{
+    float: left;
+    width: 35vw;
+    height: 100%;
+}
+#game_middle{
+    float: left;
+    width: 30vw;
+    height: 100%;
+}
+#game_right{
+    float: right;
+    width: 25vw;
+    height: 100%;
+}
+#info{
+    float: left;
+    width: 20vw;
+    padding: 0;
+    margin-bottom: 0.6vh;
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,0.8463586118040967) 44%, rgba(0,212,255,0) 100%);
+}
+#info img{
+    float: left;
+    width: 3.3vw;
+    margin-right: 1vw;
+}
+#info #nick{
+    float: left;
+    font-size: 1.5vw;
+    margin-top: 0.7vw;
+    color: white;
+}
+#top_block{
+    clear:both;
+}
+.border_game{
+    border-style: solid;
+    border-width: 0.4vw;
+    border-image-source: url("assets/border.png");
+    border-image-slice: 11 11;
+    background-color:rgba(0, 0, 0, 0.4);
+}
+.border_line{
+    border-bottom-style: solid;
+    border-bottom-width: 0.5vw;
+    border-image-source: url("assets/border.png");
+    border-image-slice: 11 11;
+}
+#graveyard{
+    float: left;
+    width: 18.5vw;
+    height: 42vh;
+    color: white;
+}
+.list{
+    height: calc(100% - 2.5vw);
+}
+#graveyard ul li{
+    margin: 0 0 0 0.3vw;
+    font-size: 1vw;
+    text-shadow: 1px 1px 2px #000000;
+}
+#graveyard h1, #rolelist h1{
+    font-size: 1.6vw;
+    margin-top: 1vh;
+    margin-bottom: 0.7vh;
+    color: #ffffff;
+}
+.number_icon{
+    float: left;
+    width: 1.2vw;
+    height: 1.2vw;
+    color: #e5ec66;
+    background-color: #b88007;
+    border-radius: 50%;
+    font-family: blowhole, sans-serif;
+    font-size: 1.2vw;
+    text-align: center;
+    text-shadow: 0.5px 0.5px 0.5px #000;
+    margin-right: 0.1vw;
+}
+.special_icon{
+    float: left;
+    height: 0.8vw;
+    margin-top: 0.25vw;
+    margin-right: 0.1vw;
+}
+.action_button{
+    float: right;
+    height: 1.2vw;
+    min-width: 4vw;
+    font-family: blowhole, sans-serif;
+    text-transform: uppercase;
+    background-color: #b88007;
+    border-radius: 10px;
+    margin-right: 0.8vw;
+    padding: 0 0.5vw 0 0.3vw;
+}
+.action_button img{
+    float: left;
+    height: 100%;
+}
+.action_text{
+    margin-top: 0.1vw;
+    float: left;
+    margin-left: 0.4vw;
+}
+.grave_icon{
+    display: inline-block;
+    width: 1.3vw;
+    height: 1.3vw;
+    font-family: blowhole, sans-serif;
+    font-size: 1.2vw;
+    text-align: center;
+    margin-right: 0.2vw;
+    background-image: url(assets/grave.png);
+    background-size: cover;
+    text-shadow: 1px 1px 2px #000000;
+}
+#rolelist{
+    float: left;
+    width: 13.5vw;
+    height: 42vh;
+    margin-left: 0.3vw;
+}
+#rolelist ul li{
+    color: white;
+    font-size: 1.2vw;
+    line-height: 1.3vw;
+    margin-left: 0.7vw;
+    text-shadow: 1px 1px 2px #000000;
+}
+#chat_game{
+    float: left;
+    margin-top: 0.4vh;
+    width: 33vw;
+    height: 46.5vh;
+}
+#logs_icon{
+    float: left;
+    height: 3vw;
+    width: 3vw;
+}
+#logs_icon img{
+    width: 100%;
+    height: 100%;
+}
+#loading_bar{
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: red;
+    z-index: 1;
+}
+#timer{
+    position: relative;
+    width: 20vw;
+    height: 2.7vw;
+    margin: 0 auto;
+    margin-top: 0.6vh;
+    border: solid 0.3vw #713a0a;
+    color: #ff8d00;
+    border-radius: 10px;
+}
+#date{
+    position: relative;
+    float: left;
+    font-size: 2.7vw;
+    font-family: blowhole;
+    margin-left: 1vw;
+    margin-top: 0.2vh;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+    z-index: 2;
+}
+#time{
+    position: relative;
+    float: right;
+    font-size: 2.7vw;
+    font-family: blowhole;
+    margin-right: 2vw;
+    margin-top: 0.2vh;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+    z-index: 2;
+}
+.display_notes{
+    position: absolute;
+    left: 34.5vw;
+    top: 16vh;
+    width: 31vw;
+    height: 68.5vh;
+}
+.display_notes img{
+    width: 100%;
+    height: 100%;
+}
+.will_nick{
+    position: absolute;
+    font-family: blowhole;
+    font-size: 2.1vw;
+    top: 4.2vh;
+    left: 14vw;
+}
+.close_button{
+    position: absolute;
+    top: 3.3vh;
+    left: 25.1vw;
+    width: 2.9vw;
+}
+.close_button img{
+    width: 100%;
+    height: 100%;
+}
+#notes{
+    margin-top: 83vh;
+}
+#notes div img{
+    width: 4.2vw
+}
+#notes div{
+    float: left;
+}
+#role_card{
+    float: right;
+    width: 17.5vw;
+    height: 43vh;
+    overflow-y: auto;
+}
+#role_card h1{
+    font-size: 2.1vw;
+    margin: 0.2vw 0;
+}
+#attack_text,#defense_text{
+    float: left;
+    margin-top: 0.2vw;
+    margin-left: 0.1vw;
+    font-size: 1.4vw;
+    color: #58a0c8;
+    text-decoration: underline;
+}
+#attack_text{
+    margin-right: 0.9vw;
+}
+#defense img{
+    float: left;
+    width: 1.9vw;
+}
+#attack img{
+    float: left;
+    width: 1.3vw;
+}
+#role_info{
+    padding-left: 0.4vw;
+    text-shadow: 1px 1px 2px #000000;
+}
+#aligment{
+    clear: both;
+    height: 3.3vw;
+    color: #f0e67c;
+}
+#aligment_title{
+    margin-top: 1.1vw;
+    float: left;
+    color: #f0e67c;
+    font-size: 1.1vw;
+    margin-right: 0.7vw;
+}
+#aligment_type{
+    margin-top: 1.2vw;
+    float: left;
+    font-size: 1vw;
+    font-weight: bold;
+}
+#goal{
+    clear:both;
+}
+.stats_title{
+    color: #f0e67c;
+    font-size: 1.1vw;
+    margin-top: 0.2vw;
+    margin-bottom: 0.3vw;
+}
+.stats_desc{
+    color: #ffffff;
+    font-size: 0.9vw;
+}
+.stats_desc li{
+    margin: 0;
+}
+.stats_desc li:before{
+    content: "- ";
+}
+.white{
+    color: #ffffff;
+}
+#players_block{
+    float: right;
+    margin-top: 1vh;
+}
+#players_tab,#targets_tab{
+    float: right;
+    height: 3.5vw;
+    width: 11.35vw;
+    background-image: url("assets/game_button.png");
+    background-size: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+#players_tab:hover, #targets_tab:hover{
+    filter: brightness(130%);
+}
+#players_tab img{
+    margin-top: 0.4vw;
+    margin-left: 3.3vw;
+    width: 4vw;
+}
+#targets_tab img{
+    margin-left: 3.5vw;
+    width: 3.5vw;
+}
+#players_block h1{
+    font-size: 1.7vw;
+    color:#febd38;
+    margin: 0;
+    padding-top: 0.4vh;
+    background-color: rgb(113, 58, 10, 0.4);
+}
+#players_list{
+    width: 22vw;
+    height: 45vh;
+    float: right;
+    margin-top: -0.2vh;
+}
+#players_ul{
+    padding-top: 0.9vh;
+    padding-left: 0.5vw;
+    height: 39.5vh;
+    color: #ffffff;
+    font-size: 1vw;
+    text-shadow: 1px 1px 2px #000000;
+}
+#full_last_will, #full_note{
+    display: none;
+}
+@font-face {
+    font-family: blowhole;
+    src: url(assets/BlowholeBB.ttf);
+}
+.sd, img {  
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+ }
+.se{
+    user-select: text;
+    -moz-user-select: text;
+    -webkit-user-drag: text;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+ }

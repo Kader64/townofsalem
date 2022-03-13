@@ -1,0 +1,277 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <title>Town of Salem</title>
+</head>
+<body class="sd">
+    <div id="lobby">
+        <div id="lobby_left" class="border_lobby">
+            <div id="enter_name" class="border_line">
+                <h1>Select Name</h1>
+                <input type=text placeholder="Enter your name..."id="select_name_input" autocomplete="off">
+                <div id="select_name_submit" class="lobby_buttons">Submit</div>
+            </div>
+            <div id="chat_lobby">
+                <div class="chat" class="border_line" id="chat_lobby_div">
+                </div>
+                <div class="chat_input">
+                    <form id="lobby_chat_form">
+                        <input id="lobby_chat_input" type="text" placeholder="Enter your chat messege here..." autocomplete="off">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="lobby_rolelist" class="border_lobby">
+            <h1 id="countRoles">Selected Roles: 0</h1>
+            <ul class="border_line">
+            </ul>
+            <div>
+                <h1 id = "lobby_role_desc"></h1>
+            </div>
+            <div id="desc">
+            </div>
+        </div>
+        <div id="lobby_playerslist"class="border_lobby">
+            <h1 id="countPlayers">Players in Lobby: 0</h1>
+            <ul id="lobby_players_ul">
+            </ul>
+            <div id="host_btn" class="lobby_buttons">
+                Toggle Host Controls
+            </div>
+            <div id="start_btn" class="lobby_buttons">
+                Start
+            </div>
+        </div>
+        <div id="host_controls" class="border_lobby">
+            <div class="lobby_buttons" id="close_controls">
+                Close Host Controls
+            </div>
+            <div class="lobby_buttons" id="town_btn">
+                Town
+            </div>
+            <ul id="town_ul">
+                <li><img class="role_icon" src="assets/roles/bodyguard.png"><span class="role_name">Bodyguard</span></li>
+                <li><img class="role_icon" src="assets/roles/crusader.png"><span class="role_name">Crusader</span></li>
+                <li><img class="role_icon" src="assets/roles/doctor.png"><span class="role_name">Doctor</span></li>
+                <li><img class="role_icon" src="assets/roles/escort.png"><span class="role_name">Escort</span></li>
+                <li><img class="role_icon" src="assets/roles/investigator.png"><span class="role_name">Investigator</span></li>
+                <li><img class="role_icon" src="assets/roles/jailor.png"><span class="role_name">Jailor</span></li>
+                <li><img class="role_icon" src="assets/roles/lookout.png"><span class="role_name">Lookout</span></li>
+                <li><img class="role_icon" src="assets/roles/mayor.png"><span class="role_name">Mayor</span></li>
+                <li><img class="role_icon" src="assets/roles/medium.png"><span class="role_name">Medium</span></li>
+                <li><img class="role_icon" src="assets/roles/psychic.png"><span class="role_name">Psychic</span></li>
+                <li><img class="role_icon" src="assets/roles/retributionist.png"><span class="role_name">Retributionist</span></li>
+                <li><img class="role_icon" src="assets/roles/sheriff.png"><span class="role_name">Sheriff</span></li>
+                <li><img class="role_icon" src="assets/roles/spy.png"><span class="role_name">Spy</span></li>
+                <li><img class="role_icon" src="assets/roles/tracker.png"><span class="role_name">Tracker</span></li>
+                <li><img class="role_icon" src="assets/roles/transporter.png"><span class="role_name">Transporter</span></li>
+                <li><img class="role_icon" src="assets/roles/trapper.png"><span class="role_name">Trapper</span></li>
+                <li><img class="role_icon" src="assets/roles/vampire-hunter.png"><span class="role_name">Vampire Hunter</span></li>
+                <li><img class="role_icon" src="assets/roles/veteran.png"><span class="role_name">Veteran</span></li>
+                <li><img class="role_icon" src="assets/roles/vigilante.png"><span class="role_name">Vigilante</span></li>
+            </ul>
+            <div class="lobby_buttons" id="mafia_btn">
+                Mafia
+            </div>
+            <ul id="mafia_ul">
+                <li><img class="role_icon" src="assets/roles/ambusher.png"><span class="role_name">Ambusher</span></li>
+                <li><img class="role_icon" src="assets/roles/blackmailer.png"><span class="role_name">Blackmailer</span></li>
+                <li><img class="role_icon" src="assets/roles/consigliere.png"><span class="role_name">Consigliere</span></li>
+                <li><img class="role_icon" src="assets/roles/consort.png"><span class="role_name">Consort</span></li>
+                <li><img class="role_icon" src="assets/roles/disguiser.png"><span class="role_name">Disguiser</span></li>
+                <li><img class="role_icon" src="assets/roles/forger.png"><span class="role_name">Forger</span></li>
+                <li><img class="role_icon" src="assets/roles/framer.png"><span class="role_name">Framer</span></li>
+                <li><img class="role_icon" src="assets/roles/hypnotist.png"><span class="role_name">Hypnotist</span></li>
+                <li><img class="role_icon" src="assets/roles/janitor.png"><span class="role_name">Janitor</span></li>
+                <li><img class="role_icon" src="assets/roles/godfather.png"><span class="role_name">Godfather</span></li>
+                <li><img class="role_icon" src="assets/roles/mafioso.png"><span class="role_name">Mafioso</span></li>
+            </ul>
+            <div class="lobby_buttons" id="coven_btn">
+                Coven
+            </div>
+            <ul id="coven_ul">
+                <li><img class="role_icon" src="assets/roles/coven-leader.png"><span class="role_name">Coven Leader</span></li>
+                <li><img class="role_icon" src="assets/roles/hex-master.png"><span class="role_name">Hex Master</span></li>
+                <li><img class="role_icon" src="assets/roles/medusa.png"><span class="role_name">Medusa</span></li>
+                <li><img class="role_icon" src="assets/roles/necromancer.png"><span class="role_name">Necromancer</span></li>
+                <li><img class="role_icon" src="assets/roles/poisoner.png"><span class="role_name">Poisoner</span></li>
+                <li><img class="role_icon" src="assets/roles/potion-master.png"><span class="role_name">Potion Master</span></li>
+            </ul>
+            <div class="lobby_buttons" id="neutral_btn">
+                Neutral
+            </div>
+            <ul id="neutral_ul">
+                <li><img class="role_icon" src="assets/roles/amnesiac.png"><span class="role_name" style="color: #22ffff">Amnesiac</span></li>
+                <li><img class="role_icon" src="assets/roles/arsonist.png"><span class="role_name" style="color: #ee7600">Arsonist</span></li>
+                <li><img class="role_icon" src="assets/roles/executioner.png"><span class="role_name">Executioner</span></li>
+                <li><img class="role_icon" src="assets/roles/guardian-angel.png"><span class="role_name" style="color: #ffffff">Guardian Angel</span></li>
+                <li><img class="role_icon" src="assets/roles/jester.png"><span class="role_name" style="color: #f7b3da">Jester</span></li>
+                <li><img class="role_icon" src="assets/roles/juggernaut.png"><span class="role_name" style="color: #631A35">Juggernaut</span></li>
+                <li><img class="role_icon" src="assets/roles/pirate.png"><span class="role_name" style="color: #edc240">Pirate</span></li>
+                <li><img class="role_icon" src="assets/roles/plaguebearer.png"><span class="role_name" style="color: #cfff63">Plaguebearer</span></li>
+                <li><img class="role_icon" src="assets/roles/serial-killer.png"><span class="role_name" style="color: #336eff">Serial Killer</span></li>
+                <li><img class="role_icon" src="assets/roles/survivor.png"><span class="role_name" style="color: #dddd00">Survivor</span></li>
+                <li><img class="role_icon" src="assets/roles/vampire.png"><span class="role_name" style="color: #7b8968">Vampire</span></li>
+                <li><img class="role_icon" src="assets/roles/werewolf.png"><span class="role_name" style="color: #9f703a">Werewolf</span></li>
+            </ul>
+            <div class="lobby_buttons" id="random_btn">
+                Random
+            </div>
+            <ul id="random_ul">
+                <li><img class="role_icon" src="assets/roles/coven-leader.png"><span class="role_name" style="color: #bf5fff">Random Coven</span></li>
+                <li><img class="role_icon" src="assets/roles/random_town.png"><span class="role_name" style="color: #7fff00">Random Town</span></li>
+                <li><img class="role_icon" src="assets/roles/investigator.png"><span class="role_name" style="color: #7fff00">Town Investigative</span></li>
+                <li><img class="role_icon" src="assets/roles/bodyguard.png"><span class="role_name" style="color: #7fff00">Town Protective</span></li>
+                <li><img class="role_icon" src="assets/roles/vigilante.png"><span class="role_name" style="color: #7fff00">Town Killing</span></li>
+                <li><img class="role_icon" src="assets/roles/escort.png"><span class="role_name" style="color: #7fff00">Town Support</span></li>
+                <li><img class="role_icon" src="assets/roles/godfather.png"><span class="role_name" style="color: #dd0000">Random Mafia</span></li>
+                <li><img class="role_icon" src="assets/roles/mafioso.png"><span class="role_name" style="color: #dd0000">Mafia Killing</span></li>
+                <li><img class="role_icon" src="assets/roles/consort.png"><span class="role_name" style="color: #dd0000">Mafia Support</span></li>
+                <li><img class="role_icon" src="assets/roles/disguiser.png"><span class="role_name" style="color: #dd0000">Mafia Deception</span></li>
+                <li><img class="role_icon" src="assets/roles/random_neutral.png"><span class="role_name" style="color: #cccccc">Random Neutral</span></li>
+                <li><img class="role_icon" src="assets/roles/survivor.png"><span class="role_name" style="color: #cccccc">Random Benign</span></li>
+                <li><img class="role_icon" src="assets/roles/plaguebearer.png"><span class="role_name" style="color: #cccccc">Neutral Chaos</span></li>
+                <li><img class="role_icon" src="assets/roles/jester.png"><span class="role_name" style="color: #cccccc">Neutral Evil</span></li>
+                <li><img class="role_icon" src="assets/roles/arsonist.png"><span class="role_name" style="color: #cccccc">Neutral Killing</span></li>
+                <li><img class="role_icon" src="assets/roles/amnesiac.png"><span class="role_name" style="color: #ffffff">Any</span></li>
+            </ul>
+        </div>
+    </div>
+    <div id="game">
+        <section id="game_left">
+            <div id="info">
+                <img src="assets/settings.png">
+                <div id="nick">Kader</div>
+            </div>
+            <div id="top_block">
+                <div id="graveyard" class="border_game">
+                    <h1>GRAVEYARD</h1>
+                    <ul class="list">
+                        <!-- <li>
+                            <div class="number_icon">1</div><div class="grave_icon">1</div>Kader kaderowski
+                        </li> -->
+                    </ul>
+                </div>
+                <div id="rolelist" class="border_game">
+                    <h1>ROLE LIST</h1>
+                    <ul class="list">
+                    </ul>
+                </div>
+            </div>
+            <div id="chat_game" class="border_game">
+                <div class="chat" class="border_line" id="chat_game_div">
+                </div>
+                <div class="chat_input">
+                    <div id="logs_icon">
+                        <img src="assets/chat-full.png">
+                    </div>
+                    <form id="game_chat_form">
+                        <input type="text" placeholder="Enter your chat messege here..." id="chat_game_input" autocomplete="off">
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section id="game_middle">
+            <div id="timer">
+                <div id="loading_bar"></div>
+                <div id="date">DAY <span class="white"></span></div>
+                <div id="time"><div>
+            </div>
+            <div class="display_notes" id="full_note">
+                <img src="assets/note.png">
+                <div class="will_nick">
+                    Kader
+                </div>
+                <div class="close_button">
+                    <img src="assets/save_button.png">
+                </div>
+            </div>
+            <div class="display_notes" id="full_last_will">
+                <img src="assets/last_will.png">
+                <div class="will_nick">
+                    Kader
+                </div>
+                <div class="close_button">
+                    <img src="assets/save_button.png">
+                </div>
+            </div>
+            <!-- <div class="display_notes">
+                <img src="assets/note.png">
+                <div id="will_nick">
+                    Kader
+                </div>
+                <div class="save_button">
+                    <img src="assets/save_button.png">
+                </div>
+                <div class="copy_button">
+                    <img  src="assets/copy.png">
+                </div>
+                <div class="paste_button">
+                    <img src="assets/paste.png">
+                </div>
+            </div> -->
+            <div id="notes">
+                <div id="last_will">
+                    <img src="assets/last_will_icon.png">
+                </div>
+                <div id="note">
+                    <img src="assets/note_icon.png">
+                </div>
+                <div id="death_note">
+                    <img src="assets/death_note_icon.png">
+                </div>
+            </div>
+        </section>
+        <section id="game_right">
+            <div id="role_card" class="border_game">
+                <h1></h1>
+                <div id="role_info">
+                    <div id="attack">
+                        <img src="assets/sword.png">
+                        <div id="attack_text"></div>
+                    </div>
+                    <div id="defense">
+                        <img src="assets/shield.png">
+                        <div id="defense_text"></div>
+                    </div>
+                    <div id="aligment">
+                        <div id="aligment_title">Aligment</div>
+                        <div id="aligment_type"></div>
+                    </div>
+                    <div id="goal">
+                        <div class="stats_title">Goal</div>
+                        <div class="stats_desc" id="goal_div">
+                        </div>
+                    </div>
+                    <div id="abilities">
+                        <div class="stats_title">Abilities</div>
+                        <ul class="stats_desc" id="abili_div">
+                        </ul>
+                    </div>
+                    <div id="attributes">
+                        <div class="stats_title">Attributes</div>
+                        <ul class="stats_desc" id="atri_div">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="players_block">
+                <div id="targets_tab">
+                    <img src="assets/targets.png">
+                </div>
+                <div id="players_tab">
+                    <img src="assets/townies.png">
+                </div>
+                <div id="players_list" class="border_game">
+                    <h1></h1>
+                    <ul id="players_ul">
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>

@@ -19,9 +19,10 @@ server.listen(8080,()=>{
 const io = socketio(server);
 //------------------------------------//
 const Lobby = require("./classes/Lobby");
+var lobby = new Lobby();
 global.io = io;
 
 io.on('connection',(socket)=>{
     console.log(socket.id + ' connected');
-    Lobby.joinPlayer(socket);
+    lobby.joinPlayer(socket);
 });

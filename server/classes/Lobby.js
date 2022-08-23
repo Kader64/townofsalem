@@ -1,20 +1,20 @@
 const roles = require("./RoleManager");
 const Game = require("./Game");
 class Lobby {
-    static possibleNames = ["Cotton Mather","Deodat Lawson","Edward Bishop","Giles Corey","James Bayley","James Russel","John Hathorne",
+    possibleNames = ["Cotton Mather","Deodat Lawson","Edward Bishop","Giles Corey","James Bayley","James Russel","John Hathorne",
     "John Proctor","John Willard","Jonathan Corwin","Samuel Parris","Samuel Sewall","Thomas Danforth","William Hobbs","William Phips",
     "Abigail Hobbs","Alice Young","Ann Hibbins","Ann Putnam","Ann Sears","Betty Parris","Dorothy Good","Lydia Dustin","Martha Corey",
     "Mary Eastey","Mary Johnson","Mary Warren","Sarah Bishop","Sarah Good","Sarah Wildes"];
-    static players = [];
-    static rolelist = [];
-    static status = "Lobby";
-    static gameSettings = {
+    players = [];
+    rolelist = [];
+    status = "Lobby";
+    gameSettings = {
         role_limit: 6,
         mafia_limit: 4,
         coven_Limit: 4,
         vamps_limit: 4,
     }
-    static joinPlayer(socket){
+    joinPlayer(socket){
         if(this.status=="Lobby"){
             this.#addNewPlayer(socket);
             socket.on("nick",(n)=>{
@@ -50,12 +50,12 @@ class Lobby {
             socket.disconnect();
         }
     }
-    static #playersMsg = (msg,player) => {
+    #playersMsg = (msg,player) => {
         msg = msg.trim();
         msg = msg.replaceAll("<","≤");
         io.emit("lobby_msg", msg, player.nick)
     }
-    static #addNewPlayer(socket){
+    #addNewPlayer(socket){
         socket.nick = this.#random_name();
         this.players.push(socket);
         io.emit("lobby_players", this.#showPlayers());
@@ -63,20 +63,20 @@ class Lobby {
         socket.broadcast.emit("l_servermsg",`<span style="color:gold; font-size:1.1vw">${socket.nick}</span> joined the game.`,"#02fb4c","none");
         io.to(socket.id).emit("l_servermsg","Welcome! Server running","#02fb4c","none")
     }
-    static #random_name = () =>{
+    #random_name = () =>{
         let number = Math.floor(Math.random()*this.possibleNames.length);
         let n = this.possibleNames[number];
         this.possibleNames.splice(number,1);
         return n;
     }
-    static #showPlayers(){
+    #showPlayers(){
         var nicks = [];
         this.players.forEach((s)=>{
             nicks.push(s.nick);
         })
         return nicks;
     }
-    static #updateNick = (n,player) => {
+    #updateNick = (n,player) => {
         n = n.trim();
         n = n.replaceAll("<","≤");
         if(n.length>0 && n.length<=15){
@@ -93,7 +93,7 @@ class Lobby {
             io.to(player.id).emit("l_servermsg","The nickname must be at least 1 to 15 characters long.","#ff1818","none")
         }
     }
-    static #rolelist_validation = (role,id) =>{
+    #rolelist_validation = (role,id) =>{
         role = role.replace(/\s/g, "");
         let playerRole;
         if(this.players[0].id != id){
@@ -102,7 +102,6 @@ class Lobby {
         try{
             playerRole = eval("new roles."+role+"()");
         }catch(e){
-            
             return "The selected role does not exist.";
         }
         if(this.rolelist.length >= 15){
@@ -131,7 +130,7 @@ class Lobby {
         this.rolelist.push(playerRole);
         return "OK";
     }
-    static #start_validation(id){
+    #start_validation(id){
         if(this.players[0].id != id){
             return "Only host can start the game";
         }
@@ -143,7 +142,7 @@ class Lobby {
         }
         return "OK";
     }
-    static #addRole = (role,id) =>{
+    #addRole = (role,id) =>{
         let results = this.#rolelist_validation(role,id);
         if(results === "OK"){
             io.emit("rolelist",this.rolelist)
@@ -152,7 +151,7 @@ class Lobby {
             io.to(id).emit("l_servermsg",results,"#ff1818","none")
         }
     }
-    static #removeRole = (index,id) =>{
+    #removeRole = (index,id) =>{
         if(this.players[0].id == id){
             this.rolelist.splice(index,1);
             io.emit("rolelist",this.rolelist)
@@ -161,7 +160,7 @@ class Lobby {
             io.to(id).emit("l_servermsg","Only host can remove roles","#ff1818","none")
         }
     }
-    static #startGame(id){
+    #startGame(id){
         let results = this.#start_validation(id);
         if(results == "OK"){
             this.status = "Game";

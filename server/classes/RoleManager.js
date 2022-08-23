@@ -1,9 +1,11 @@
 module.exports = {
-    Bodyguard: require("./roles/Bodyguard"),
-    Crusader: require("./roles/Crusader"),
-    Doctor: require("./roles/Doctor"),
+    // Crusader: require("./roles/Crusader"),
+    // Doctor: require("./roles/Doctor"),
+    // Escort: require("./roles/Escort"),
+    Transporter: require("./roles/Transporter"),
+    Veteran: require("./roles/Veteran"),
     Mafioso: require("./roles/Mafioso"),
     Investigator: require("./roles/Investigator"),
-    Escort: require("./roles/Escort"),
-    Lookout: require("./roles/Lookout")
+    Lookout: require("./roles/Lookout"),
+    Bodyguard: require("./roles/Bodyguard"),
 }

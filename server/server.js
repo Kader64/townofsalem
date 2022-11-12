@@ -17,9 +17,10 @@ server.listen(8080,()=>{
 });
 
 const io = socketio(server);
-//------------------------------------//
+
 const Lobby = require("./classes/Lobby");
-var lobby = new Lobby();
+
+let lobby = new Lobby();
 global.io = io;
 
 io.on('connection',(socket)=>{

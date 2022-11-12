@@ -1,175 +1,149 @@
-const roles = require("./RoleManager");
-const Game = require("./Game");
-class Lobby {
+const Message = require("./MessageManager");
+const Game = require("./Game")
+const { getRole } = require('./RoleManager')
+
+class Lobby{
     possibleNames = ["Cotton Mather","Deodat Lawson","Edward Bishop","Giles Corey","James Bayley","James Russel","John Hathorne",
     "John Proctor","John Willard","Jonathan Corwin","Samuel Parris","Samuel Sewall","Thomas Danforth","William Hobbs","William Phips",
     "Abigail Hobbs","Alice Young","Ann Hibbins","Ann Putnam","Ann Sears","Betty Parris","Dorothy Good","Lydia Dustin","Martha Corey",
     "Mary Eastey","Mary Johnson","Mary Warren","Sarah Bishop","Sarah Good","Sarah Wildes"];
-    players = [];
-    rolelist = [];
-    status = "Lobby";
-    gameSettings = {
-        role_limit: 6,
-        mafia_limit: 4,
-        coven_Limit: 4,
-        vamps_limit: 4,
-    }
+    players = []
+    rolelist = []
+    status = 0
+
     joinPlayer(socket){
-        if(this.status=="Lobby"){
-            this.#addNewPlayer(socket);
-            socket.on("nick",(n)=>{
-                this.#updateNick(n,socket)
-            })
-            socket.on("lobby_message",(msg)=>{
-                this.#playersMsg(msg,socket)
-            })
-            socket.on("addRole",(role)=>{
-                this.#addRole(role,socket.id)
-            })
-            socket.on("removeRole",(index)=>{
-                this.#removeRole(index,socket.id)
-            })
-            socket.on("start",()=>{
-                this.#startGame(socket.id);
-            })
-            socket.on("disconnect",()=>{
-                console.log(socket.id + ' disconnected');
-                let p;
-                for(var i=0;i<this.players.length;i++){
-                    if(this.players[i].id==socket.id){
-                        p = this.players.splice(i,1);
-                        break;
-                    }
-                }
-                io.emit("lobby_players", this.#showPlayers());
-                io.emit("l_servermsg",`<span style="color:gold; font-size:1.1vw">${socket.nick}</span> left the game.`,"#02fb4c","none");
-            })
-        }
-        else{
-            io.to(socket.id).emit("l_servermsg","Game is currently running, try to reconnect later...","#ff1818","left")
+        if(this.status!=0){
+            io.to(socket.id).emit("servermsg","Game is currently running, try to reconnect later...","#ff1818","none")
             socket.disconnect();
+            return;    
         }
+
+        this.#onNewSocket(socket);
+        socket.on("nick",(nick)=>{
+            this.#onUpdateNick(nick,socket)
+        })
+        socket.on("msg",(msg)=>{
+            this.#onPlayerMessage(msg,socket)
+        })
+        socket.on("addRole",(role)=>{
+            this.#onAddRole(role,socket)
+        })
+        socket.on("removeRole",(index)=>{
+            this.#onRemoveRole(index,socket)
+        })
+        socket.on("start",()=>{
+            this.#onGameStart(socket);
+        })
+        socket.on("disconnect",()=>{
+            this.#onDisconnect(socket);
+        })
     }
-    #playersMsg = (msg,player) => {
+
+    #onNewSocket(socket){
+        socket.defaultNick = this.#getRandomName();
+        socket.nick = socket.defaultNick;
+        this.players.push(socket);
+        Message.emitLobbyPlayerList(this.players)
+        Message.emitLobbyRoleList(this.rolelist)
+        socket.broadcast.emit("servermsg",`<span style="color:gold; font-size:1.1vw">${socket.defaultNick}</span> joined the game.`,"#02fb4c","none");
+        io.to(socket.id).emit("servermsg","Welcome! Server running","#02fb4c","none")
+    }
+    
+    #getRandomName = () =>{
+        let number = Math.floor(Math.random()*this.possibleNames.length);
+        let nick = this.possibleNames[number];
+        this.possibleNames.splice(number,1);
+        return nick;
+    }
+
+    #onUpdateNick = (nick,socket) => {
+        nick = nick.trim();
+        nick = nick.replaceAll("<","≤");
+        if(!(nick.length>0 && nick.length<=15)){
+            io.to(socket.id).emit("servermsg","The nickname must be at least 1 to 15 characters long.","#ff1818","none")
+            return;
+        }
+        if(this.players.filter((e)=>{return (e.nick == nick)}).length == 0){
+            socket.nick = nick;
+            Message.emitLobbyPlayerList(this.players)
+            io.to(socket.id).emit("servermsg","Your nickname has been updated.","#02fb4c","none")
+            return;
+        }
+        io.to(socket.id).emit("servermsg","This nickname is taken by another player.","#ff1818","none")
+    }
+    
+    #onPlayerMessage = (msg,player) => {
         msg = msg.trim();
         msg = msg.replaceAll("<","≤");
-        io.emit("lobby_msg", msg, player.nick)
+        io.emit("msg", msg, player.nick)
     }
-    #addNewPlayer(socket){
-        socket.nick = this.#random_name();
-        this.players.push(socket);
-        io.emit("lobby_players", this.#showPlayers());
-        io.emit("rolelist", this.rolelist);
-        socket.broadcast.emit("l_servermsg",`<span style="color:gold; font-size:1.1vw">${socket.nick}</span> joined the game.`,"#02fb4c","none");
-        io.to(socket.id).emit("l_servermsg","Welcome! Server running","#02fb4c","none")
-    }
-    #random_name = () =>{
-        let number = Math.floor(Math.random()*this.possibleNames.length);
-        let n = this.possibleNames[number];
-        this.possibleNames.splice(number,1);
-        return n;
-    }
-    #showPlayers(){
-        var nicks = [];
-        this.players.forEach((s)=>{
-            nicks.push(s.nick);
-        })
-        return nicks;
-    }
-    #updateNick = (n,player) => {
-        n = n.trim();
-        n = n.replaceAll("<","≤");
-        if(n.length>0 && n.length<=15){
-            if(this.players.filter((e)=>{return (e.nick == n)}).length == 0){
-                player.nick = n;
-                io.emit("lobby_players", this.#showPlayers());
-                io.to(player.id).emit("l_servermsg","Your nickname has been updated.","#02fb4c","none")
-            }
-            else{
-                io.to(player.id).emit("l_servermsg","This nickname is taken by another player.","#ff1818","none")
-            }
-        }
-        else{
-            io.to(player.id).emit("l_servermsg","The nickname must be at least 1 to 15 characters long.","#ff1818","none")
-        }
-    }
-    #rolelist_validation = (role,id) =>{
-        role = role.replace(/\s/g, "");
-        let playerRole;
-        if(this.players[0].id != id){
-            return "Only host can add roles";
-        }
+
+    #onAddRole = (id,socket) =>{
+        let role = getRole(id)
         try{
-            playerRole = eval("new roles."+role+"()");
-        }catch(e){
-            return "The selected role does not exist.";
+            if(role==-1){
+                throw "The selected role does not exist.";
+            }
+            if(this.players[0].id != socket.id){
+                throw "Only host can add roles";
+            }
+            if(this.rolelist.length >= 15){
+                throw "The Role list is full";
+            }
+            let sameRolesCount = this.rolelist.filter((e)=>{return (e.name == role.name)}).length;
+            if(sameRolesCount >= role.limit){
+                throw `${role.name} is limited to ${role.limit} per game.`
+            }
+
+            this.rolelist.push(role);
+            Message.emitLobbyRoleList(this.rolelist)
         }
-        if(this.rolelist.length >= 15){
-            return "The Role list is full";
-        }
-        if(this.rolelist.filter((e)=>{return (e.name == playerRole.name)}).length >= playerRole.limit){
-            return `${playerRole.name} is limited to ${playerRole.limit} per game.`
-        }
-        switch(playerRole.aligment){
-            case "Mafia": 
-                if(this.rolelist.filter((e)=>{return (e.aligment == playerRole.aligment)}).length >= this.gameSettings.mafia_limit){
-                    return `Mafia roles are limited to "+${this.gameSettings.mafia_limit} per game.`;
-                }
-            break;
-            case "Coven": 
-                if(this.rolelist.filter((e)=>{return (e.aligment == playerRole.aligment)}).length >= this.gameSettings.coven_limit){
-                    return `Coven roles are limited to "+${this.gameSettings.coven_limit} per game.`;
-                }
-            break;
-            case "Neutral":
-                if(playerRole.name == "Vampire" && this.rolelist.filter((e)=>{return (e.name == playerRole.name)}).length >= this.gameSettings.vamps_limit){
-                    return `Vampires are limited to "+${this.gameSettings.vamps_limit} per game.`;
-                }
-            break;
-        }
-        this.rolelist.push(playerRole);
-        return "OK";
-    }
-    #start_validation(id){
-        if(this.players[0].id != id){
-            return "Only host can start the game";
-        }
-        if(this.players.length < 2){
-            return "There must be at least 2 players in the game."
-        }
-        if(this.rolelist.length != this.players.length){
-            return "The number of roles must be equal to the number of players.";
-        }
-        return "OK";
-    }
-    #addRole = (role,id) =>{
-        let results = this.#rolelist_validation(role,id);
-        if(results === "OK"){
-            io.emit("rolelist",this.rolelist)
-        }
-        else{
-            io.to(id).emit("l_servermsg",results,"#ff1818","none")
+        catch(e){
+            io.to(socket.id).emit("servermsg",e,"#ff1818","none")
         }
     }
-    #removeRole = (index,id) =>{
-        if(this.players[0].id == id){
+
+    #onRemoveRole = (index,socket) =>{
+        if(this.players[0].id == socket.id){
             this.rolelist.splice(index,1);
-            io.emit("rolelist",this.rolelist)
+            Message.emitLobbyRoleList(this.rolelist);
         }
         else{
-            io.to(id).emit("l_servermsg","Only host can remove roles","#ff1818","none")
+            io.to(socket.id).emit("servermsg","Only host can edit rolelist","#ff1818","none")
         }
     }
-    #startGame(id){
-        let results = this.#start_validation(id);
-        if(results == "OK"){
-            this.status = "Game";
-            var game = new Game(this.players,this.rolelist);
-            game.start();
+
+    #onGameStart(socket){
+        try{
+            if(this.players[0].id != socket.id){
+                throw "Only host can start the game";
+            }
+            // if(this.players.length < 2){
+            //     throw "There must be at least 2 players in the game."
+            // }
+            if(this.rolelist.length != this.players.length){
+                throw "The number of roles must be equal to the number of players.";
+            }
+            
+            this.status = 1;
+            Game.init(this.players, this.rolelist)
         }
-        else{
-            io.to(id).emit("l_servermsg",results,"#ff1818","none")
+        catch(e){
+            io.to(socket.id).emit("servermsg",e,"#ff1818","none")
         }
+    }
+
+    #onDisconnect = (socket) => {
+        console.log(socket.id + ' disconnected');
+        for(var i=0;i<this.players.length;i++){
+            if(this.players[i].id==socket.id){
+                this.players.splice(i,1);
+                break;
+            }
+        }
+        this.possibleNames.push(socket.defaultNick);
+        Message.emitLobbyPlayerList(this.players);
+        io.emit("servermsg",`<span style="color:gold; font-size:1.1vw">${socket.nick}</span> left the game.`,"#02fb4c","none");
     }
 }
 module.exports = Lobby;

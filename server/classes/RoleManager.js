@@ -1,11 +1,17 @@
-module.exports = {
-    // Crusader: require("./roles/Crusader"),
-    // Doctor: require("./roles/Doctor"),
-    // Escort: require("./roles/Escort"),
-    Transporter: require("./roles/Transporter"),
-    Veteran: require("./roles/Veteran"),
-    Mafioso: require("./roles/Mafioso"),
-    Investigator: require("./roles/Investigator"),
-    Lookout: require("./roles/Lookout"),
-    Bodyguard: require("./roles/Bodyguard"),
+const Bodyguard = require("./Roles/Town/Bodyguard");
+
+const ALL_ROLES = [
+    new Bodyguard(),
+
+
+
+]
+
+const getRole = (id) => {
+    if(id >= 0 && id < ALL_ROLES.length){
+        return ALL_ROLES[id];
+    }
+    return -1;
 }
+
+module.exports = { getRole }
